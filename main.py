@@ -16,6 +16,11 @@ class Main:
         gladeFile = "./Deneme1.glade"
         self.builder = gtk.Builder()
         self.builder.add_from_file(gladeFile)
+        self.builder.connect_signals(self)
+        
+        window = self.builder.get_object("MainWindow")
+        window.connect("delete-event", gtk.main_quit())
+        window.show()
 
 
 
