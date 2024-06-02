@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy project-wide -->
+  <object class="GtkWindow" id="window1">
+    <child>
+      <object class="GtkLabel" id="label1">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">label</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window2">
+    <child>
+      <object class="GtkAlignment" id="alignment1">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkAlignment" id="alignment2">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkLabel" id="label1">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">label</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkActionGroup" id="actiongroup1"/>
+  <object class="GtkWindow" id="window3">
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+  <object class="GtkDialog" id="dialog1">
+    <property name="border_width">5</property>
+    <property name="type_hint">normal</property>
+    <property name="has_separator">False</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window4">
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+  <object class="GtkInputDialog" id="inputdialog1">
+    <property name="border_width">5</property>
+    <property name="type_hint">normal</property>
+    <child internal-child="save_button">
+      <object class="GtkButton" id="inputdialog-save_button1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="can_default">True</property>
+        <property name="receives_default">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">inputdialog-save_button1</action-widget>
+      <action-widget response="0">inputdialog-close_button1</action-widget>
+    </action-widgets>
+    <child internal-child="close_button">
+      <object class="GtkButton" id="inputdialog-close_button1">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="can_default">True</property>
+        <property name="receives_default">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">inputdialog-save_button1</action-widget>
+      <action-widget response="0">inputdialog-close_button1</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkWindow" id="window5">
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+</interface>
