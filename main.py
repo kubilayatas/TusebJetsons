@@ -13,7 +13,7 @@ from gi.repository import Gtk as gtk
 
 class Main:
     def __init__(self):
-        gladeFile = "./Deneme1.glide"
+        gladeFile = "./Deneme1.glade"
         self.builder = gtk.Builder()
         self.builder.add_from_file(gladeFile)
 
