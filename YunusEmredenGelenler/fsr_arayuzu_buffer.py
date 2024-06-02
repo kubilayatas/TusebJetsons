@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 import time 
 import sys 
 import numpy as np 
-import smbus2 as smbus
+#import smbus2 as smbus
 
 
 def convert_data(data):
@@ -21,17 +21,23 @@ class ArduinoThread(QThread):
 
     def __init__(self,channel=1, parent=None):
         super(ArduinoThread, self).__init__(parent)
-        self.bus = smbus.SMBus(channel)
+        #self.bus = smbus.SMBus(channel)
         self.buffer = [[i*j for j in range(1, 8)] for i in range(1, 32)]
 
-    def run(self):
-        while True:
-            if self.bus.in_waiting:
-                for addr in range(0,32):
-                    data = self.bus.read_i2c_block_data(addr+8, 0, 24)
-                    self.buffer[addr] = convert_data(data)
-                    self.data_received.emit(self.buffer)
-            time.sleep(0.1)
+# =============================================================================
+#     def run(self):
+# # =============================================================================
+# #         while True:
+# # # =============================================================================
+# # #             if self.bus.in_waiting:
+# # #                 for addr in range(0,32):
+# # #                     data = self.bus.read_i2c_block_data(addr+8, 0, 24)
+# # #                     self.buffer[addr] = convert_data(data)
+# # #                     self.data_received.emit(self.buffer)
+# # # =============================================================================
+# #             time.sleep(0.1)
+# # =============================================================================
+# =============================================================================
 
 
 class Yunus_Emre(QWidget):
@@ -48,11 +54,11 @@ class Yunus_Emre(QWidget):
         grid_layout = QGridLayout()
         grid_layout.setSpacing(0)
 
-        self.label_list = [QLabel(f"FSR{i+1}") for i in range(0, 32)]
+        self.label_list = [QLabel(f"FSR{i+1}") for i in range(0, 128)]
         
         for row in range(0, 8):
             for col in range(0, 4):
-                grid_layout.addWidget(self.label_list[row * 4 + col], row, col)
+                grid_layout.addWidget(self.label_list[row * 2 + col], row, col)
             
         self.setLayout(grid_layout)
 
