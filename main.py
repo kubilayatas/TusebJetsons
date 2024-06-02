@@ -19,7 +19,7 @@ class Main:
         self.builder.connect_signals(self)
         
         window = self.builder.get_object("MainWindow")
-        window.connect("delete-event", gtk.main_quit())
+        window.connect("delete-event", gtk.main_quit)
         window.show()
 
 
