@@ -7,7 +7,7 @@ Created on Sun Jun  2 17:24:22 2024
 
 import gi
 
-gi.require_version("Gtk","3.0")
+gi.require_version("Gtk","2.16")
 from gi.repository import Gtk as gtk
 
 
