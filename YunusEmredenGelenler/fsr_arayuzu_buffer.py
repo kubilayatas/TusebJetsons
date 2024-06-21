@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 import time 
 import sys 
-import numpy as np 
+import numpy as np
+import math
 #import smbus2 as smbus
 
 
@@ -54,11 +55,20 @@ class Yunus_Emre(QWidget):
         grid_layout = QGridLayout()
         grid_layout.setSpacing(0)
 
-        self.label_list = [QLabel(f"FSR{i+1}") for i in range(0, 128)]
+        self.label_list = [QLabel(f"FSR{i+1:03d}") for i in range(0, 144)]
+        for i in range(0,144):
+            self.label_list[i].setStyleSheet("border: 1px solid black;")
         
-        for row in range(0, 8):
-            for col in range(0, 4):
-                grid_layout.addWidget(self.label_list[row * 2 + col], row, col)
+        for cell in range(0,36):
+            cell_column = cell%4
+            cell_row = math.floor(cell/4)
+            first_fsr = cell_row*16 + cell_column*4
+            row = cell_row*2
+            col = cell_column*2
+            grid_layout.addWidget(self.label_list[first_fsr], row, col)
+            grid_layout.addWidget(self.label_list[first_fsr + 1], row, col+1)
+            grid_layout.addWidget(self.label_list[first_fsr + 2], row+1, col)
+            grid_layout.addWidget(self.label_list[first_fsr + 3], row+1, col+1)
             
         self.setLayout(grid_layout)
 
