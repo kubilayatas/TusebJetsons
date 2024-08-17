@@ -21,7 +21,7 @@ def convert_data(data):
 buffer = [[i*j for j in range(1, 8)] for i in range(1, 32)]
 
 for addr in range(0,34):
-    data = bus.read_i2c_block_data(addr+8, 0, 24)
+    data = bus.read_i2c_block_data(addr+8, 0, 24, force=None)
     data = convert_data(data)
     buffer[addr] = data
     print("adres:{addr};data:{data}\n")
