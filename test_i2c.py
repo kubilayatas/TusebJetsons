@@ -8,6 +8,7 @@ import math
 import smbus2 as smbus
 
 bus = smbus.SMBus(1)
+time.sleep(1)
 
 def convert_data(data):
     fsr_list = []
