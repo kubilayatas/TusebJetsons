@@ -20,7 +20,7 @@ class ReadCellValueThread(QThread):
     data_received = pyqtSignal(str)
 
     def __init__(self,channel=1, parent=None):
-        super(ArduinoThread, self).__init__(parent)
+        super(ReadCellValueThread, self).__init__(parent)
         self.bus = smbus.SMBus(channel)
         self.buffer = [[0 for j in range(0, 12)] for i in range(0, 34)]
 
@@ -36,7 +36,7 @@ class ReadCellValueThread(QThread):
                 self.data_received.emit(self.buffer)
 
 
-class Yunus_Emre(QWidget):
+class User_Interface(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -88,6 +88,6 @@ class Yunus_Emre(QWidget):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = Yunus_Emre()
+    window = User_Interface()
     window.show()
     sys.exit(app.exec_())
