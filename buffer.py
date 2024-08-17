@@ -17,7 +17,7 @@ def convert_data(data):
 
 
 class ReadCellValueThread(QThread):
-    data_received = pyqtSignal(str)
+    data_received = pyqtSignal(list)
 
     def __init__(self,channel=1, parent=None):
         super(ReadCellValueThread, self).__init__(parent)
