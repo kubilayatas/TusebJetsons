@@ -6,6 +6,7 @@ import sys
 import numpy as np
 import math
 import smbus2 as smbus
+import threading
 
 
 def convert_data(data):
@@ -34,7 +35,7 @@ class ReadCellValueThread(QThread):
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
                 self.data_received.emit(self.buffer)
-                print("{self.buffer[addr-1]}\n")
+            print("{}\n".format(self.buffer[i] for i in range(0,34)))
 
 
 class User_Interface(QWidget):
