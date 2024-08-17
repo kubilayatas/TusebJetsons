@@ -9,38 +9,39 @@ import smbus2 as smbus
 
 
 def convert_data(data):
-    fsr_list = []
-    for i in range(0,7):
-        fsr_reading = (data[i] << 8) + data[i+1]
-        fsr_list.append(fsr_reading)
+    sensor_list = []
+    for i in range(0,24,2):
+        sensor_reading = (data[i] << 8) + data[i+1]
+        sensor_list.append(sensor_reading)
+    return sensor_list
 
-    return fsr_list
 
-
-class ArduinoThread(QThread):
+class ReadCellValueThread(QThread):
     data_received = pyqtSignal(str)
 
     def __init__(self,channel=1, parent=None):
         super(ArduinoThread, self).__init__(parent)
         self.bus = smbus.SMBus(channel)
-        self.buffer = [[i*j for j in range(1, 8)] for i in range(1, 32)]
+        self.buffer = [[0 for j in range(0, 12)] for i in range(0, 34)]
 
     def run(self):
         while True:
-            if self.bus.in_waiting:
-                for addr in range(0,34):
-                    data = self.bus.read_i2c_block_data(addr+8, 0, 24)
-                    self.buffer[addr] = convert_data(data)
-                    self.data_received.emit(self.buffer)
-            time.sleep(0.1)
+            for addr in range(1,34+1):
+                try:
+                    data = self.bus.read_i2c_block_data(addr+7, 0, 24, force=None)
+                    time.sleep(0.1)
+                    self.buffer[addr-1] = convert_data(data)
+                except:
+                    self.buffer[addr-1] = [None for n in range(0,12)]
+                self.data_received.emit(self.buffer)
 
 
 class Yunus_Emre(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.arduino_thread = ArduinoThread()
-        self.arduino_thread.start()
+        self.ReadCellValueThread = ReadCellValueThread()
+        self.ReadCellValueThread.start()
 
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
@@ -66,14 +67,14 @@ class Yunus_Emre(QWidget):
             
         self.setLayout(grid_layout)
 
-        self.arduino_thread.data_received.connect(self.veriyi_guncelle)
+        self.ReadCellValueThread.data_received.connect(self.update_values)
         
-    def veriyi_guncelle(self):
-        fsr_list = self.arduino_thread.buffer
-        for i in range(0,32):
-            for j in range(0,7):
+    def update_values(self):
+        sensorVal_list = self.ReadCellValueThread.buffer
+        for i in range(0,34):
+            for j in range(0,12):
                 for k in range(0,4):
-                    fsr_degeri = fsr_list[i][k]
+                    fsr_degeri = sensorVal_list[i][k]
                 
                     if fsr_degeri:
                         fsr_degeri = int(fsr_degeri) 
