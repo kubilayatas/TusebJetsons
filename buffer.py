@@ -34,7 +34,7 @@ class ReadCellValueThread(QThread):
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
                 self.data_received.emit(self.buffer)
-                print("{self.buffer[addr-1]}\n")
+                print("{}\n".format(self.buffer[addr-1]))
 
 
 class User_Interface(QWidget):
