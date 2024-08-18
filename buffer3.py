@@ -61,12 +61,14 @@ class User_Interface(QWidget):
         grid_layout.setSpacing(0)
         
         self.label_fsr = QLabel()
+        self.label_fsr_text = QLabel()
         self.canvas = QPixmap(150, 340)
         self.canvas.fill(Qt.white)
         self.label_fsr.setPixmap(self.canvas)
-        self.label_fsr.setText("Basınç Haritası")
+        self.label_fsr_text.setText("Basınç Haritası")
         
-        grid_layout.addWidget(self.label_fsr, 0, 0)
+        grid_layout.addWidget(self.label_fsr_text, 0, 0)
+        grid_layout.addWidget(self.label_fsr, 0, 1)
         
         self.setLayout(grid_layout)
         self.ReadCellValueThread.data_r.connect(self.update_img)
