@@ -6,7 +6,7 @@ import sys
 import numpy as np
 import math
 import smbus2 as smbus
-from PIL import ImageTk, Image
+from PIL import ImageTk, Image, ImageQt
 
 
 def convert_data(data):
@@ -85,7 +85,7 @@ class User_Interface(QWidget):
                     data[x,y] = (sens_val,100,255-sens_val)
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
-        return img, self.width, self.height     
+        return ImageQt(img), self.width, self.height     
      
 # =============================================================================
 #     def update_values(self):
