@@ -6,7 +6,8 @@ import sys
 import numpy as np
 import math
 import smbus2 as smbus
-from PIL import ImageTk, Image, ImageQt
+from PIL import ImageTk, Image
+from PIL.ImageQt import ImageQt
 
 
 def convert_data(data):
@@ -111,14 +112,7 @@ class User_Interface(QWidget):
         self.pixmap = QPixmap(img)
         self.label.resize(self.pixmap.width(),
                           self.pixmap.height())
-        
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = User_Interface()
-    window.show()
-    sys.exit(app.exec_())
-
-            
+           
 
 
 # =============================================================================
