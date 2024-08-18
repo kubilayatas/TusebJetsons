@@ -61,7 +61,7 @@ class User_Interface(QWidget):
         self.canvas = QPixmap(150, 340)
         self.canvas.fill(Qt.white)
         self.label.setPixmap(self.canvas)
-        self.setCentralWidget(self.label)
+        self.setLayout(self.label)
         
         self.ReadCellValueThread.data_r.connect(self.update_img)
     
