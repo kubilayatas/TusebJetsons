@@ -57,15 +57,15 @@ class User_Interface(QWidget):
         self.height = 600
         self.images = None
 
-        img, wh, ht = self.update_values()
+        img, wh, ht = self.update_img()
         self.canvas = tk.Canvas(self.root, width=wh, height=ht, bg='black')
         self.canvas.pack(expand=tk.YES)
         self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=img)
-        self.ReadCellValueThread.update.connect(self.update_values)
+        self.ReadCellValueThread.update.connect(self.next_)
         self.root.mainloop()
         
         
-    def update_values(self):
+    def update_img(self):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
@@ -84,13 +84,17 @@ class User_Interface(QWidget):
                     data[x,y] = (sens_val,100,255-sens_val)
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         img = ImageTk.PhotoImage(img)
+        return img, self.width, self.height
+    
+    def next_(self):
+
+        img, wh, ht = self.update_img()
         self.canvas.itemconfigure(self.image_on_canvas, image=img)
         self.canvas.config(width=self.width, height=self.height)
         try:
             self.canvas.wait_visibility()
         except tk.TclError:
             pass
-        return img, self.width, self.height
 
 #############################################################################
 
