@@ -17,7 +17,8 @@ def convert_data(data):
 
 
 class ReadCellValueThread(QThread):
-    data_received = pyqtSignal(list)
+    data = pyqtSignal(list)
+    data_received_flag = pyqtSignal()
 
     def __init__(self,channel=1, parent=None):
         super(ReadCellValueThread, self).__init__(parent)
@@ -34,8 +35,9 @@ class ReadCellValueThread(QThread):
                     print("{}\n".format(self.buffer[addr-1]))
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
-                self.data_received.emit(self.buffer)
+                self.data.emit(self.buffer)
                 #print("{}\n".format(self.buffer[addr-1]))
+            self.data_received_flag.emit()
 
 
 class User_Interface(QWidget):
@@ -68,7 +70,7 @@ class User_Interface(QWidget):
             grid_layout.addWidget(self.label_list[first_fsr + 3], row+1, col+1)
             
         self.setLayout(grid_layout)
-        self.ReadCellValueThread.data_received.connect(self.update_values)
+        self.ReadCellValueThread.data_received_flag.connect(self.update_values)
         
     def update_values(self):
         sensorVal_list = self.ReadCellValueThread.buffer
