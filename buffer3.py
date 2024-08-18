@@ -45,7 +45,7 @@ class ReadCellValueThread(QThread):
             
 
 
-class User_Interface():
+class User_Interface(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -62,6 +62,7 @@ class User_Interface():
         self.canvas.pack(expand=tk.YES)
         self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=img)
         self.ReadCellValueThread.update.connect(self.next_)
+        self.root.mainloop()
         
         
         
