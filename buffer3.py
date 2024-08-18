@@ -86,6 +86,10 @@ class User_Interface(QWidget):
                 else:
                     sens_val = int((sens_val/1023)*255)
                     data[x,y] = (sens_val,100,255-sens_val)
+        data2=data
+        for x in range(img.size[0]):
+            for y in range(img.size[1]-2):
+                data[x,y+2] = data2[x,y]
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
         return img, self.width, self.height     

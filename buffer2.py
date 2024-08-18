@@ -50,7 +50,6 @@ class User_Interface(QWidget):
 
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
-        
 
         grid_layout = QGridLayout()
         grid_layout.setSpacing(0)
