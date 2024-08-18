@@ -90,16 +90,42 @@ class User_Interface(QWidget):
         ###
         for x in range(img.size[0]):
             for y in range(2):
-                addr = int(y/2)*4+int(x/2)+32
-                if (addr==32 or addr==35):
-                    data[x,y] = not_connected_color
-                else:
-                    sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
-                    if sens_val==None:
-                        data[x,y] = not_connected_color
-                    else:
-                        sens_val = int((sens_val/1023)*255)
-                        data[x,y] = (sens_val,100,255-sens_val)
+                data[x,y] = not_connected_color
+        if sensorVal_list[33][0]!=None:
+            sens_val = sensorVal_list[33][0]
+            sens_val = int((sens_val/1023)*255)
+            data[2,0] = (sens_val,100,255-sens_val)
+            #
+            sens_val = sensorVal_list[33][1]
+            sens_val = int((sens_val/1023)*255)
+            data[3,0] = (sens_val,100,255-sens_val)
+            #
+            sens_val = sensorVal_list[33][2]
+            sens_val = int((sens_val/1023)*255)
+            data[2,1] = (sens_val,100,255-sens_val)
+            #
+            sens_val = sensorVal_list[33][3]
+            sens_val = int((sens_val/1023)*255)
+            data[3,1] = (sens_val,100,255-sens_val)
+            
+        if sensorVal_list[34][0]!=None:
+            sens_val = sensorVal_list[34][0]
+            sens_val = int((sens_val/1023)*255)
+            data[4,0] = (sens_val,100,255-sens_val)
+            #
+            sens_val = sensorVal_list[34][1]
+            sens_val = int((sens_val/1023)*255)
+            data[5,0] = (sens_val,100,255-sens_val)
+            #
+            sens_val = sensorVal_list[34][2]
+            sens_val = int((sens_val/1023)*255)
+            data[4,1] = (sens_val,100,255-sens_val)
+            #
+            sens_val = sensorVal_list[34][3]
+            sens_val = int((sens_val/1023)*255)
+            data[5,1] = (sens_val,100,255-sens_val)
+            
+                
         ###
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
