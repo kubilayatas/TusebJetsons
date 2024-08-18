@@ -102,8 +102,8 @@ class ImageViewer(object):
         self.ReadCellValueThread.start()
         self.root = tk.Tk()
         #self.root.state('zoomed')
-        self.width = self.root.winfo_screenwidth()
-        self.height = self.root.winfo_screenheight()
+        self.width = 800
+        self.height = 600
         self.images = None
 
         img, wh, ht = self.open_file()
