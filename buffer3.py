@@ -114,7 +114,10 @@ class ImageViewer(object):
         self.root.mainloop()
 
     def open_file(self):
+        base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
+        wpercent = (base_width / float(img.size[0]))
+        hsize = int((float(img.size[1]) * float(wpercent)))
         data = img.load()
         sensorVal_list = self.ReadCellValueThread.buffer
         for x in range(img.size[0]):
@@ -126,6 +129,7 @@ class ImageViewer(object):
                 else:
                     sens_val = int((sens_val/1023)*255)
                     data[x,y] = (sens_val,100,255-sens_val)
+        img = img.resize((base_width, hsize), Image.Resampling.LANCZOS)
         img = ImageTk.PhotoImage(img)
         return img, self.width, self.height
 
