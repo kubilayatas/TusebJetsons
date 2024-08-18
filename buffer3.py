@@ -53,10 +53,9 @@ class User_Interface(QWidget):
         self.setWindowTitle("FSR Arayüzü")
         
         self.label = QLabel(self)
-        self.pixmap = QPixmap(update_img(self)[0])
+        self.pixmap = QPixmap()
         self.label.setPixmap(self.pixmap)
-        self.label.resize(self.pixmap.width(),
-                          self.pixmap.height())
+        
         
         self.ReadCellValueThread.update.connect(self.next_())
         self.show()
@@ -103,6 +102,8 @@ class User_Interface(QWidget):
     def next_(self):
         img, wh, ht = self.update_img()
         self.pixmap = QPixmap(img)
+        self.label.resize(self.pixmap.width(),
+                          self.pixmap.height())
         
 if __name__ == "__main__":
     app = QApplication(sys.argv)
