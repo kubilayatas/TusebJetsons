@@ -57,9 +57,10 @@ class User_Interface(QWidget):
         self.height = 600
         self.images = None
 
-        self.canvas = tk.Canvas(self.root, width=200, height=450)
+        img, wh, ht = self.update_values()
+        self.canvas = tk.Canvas(self.root, width=wh, height=ht, bg='black')
         self.canvas.pack(expand=tk.YES)
-        self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=None)
+        self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=img)
         self.ReadCellValueThread.update.connect(self.update_values)
         self.root.mainloop()
         
@@ -89,6 +90,7 @@ class User_Interface(QWidget):
             self.canvas.wait_visibility()
         except tk.TclError:
             pass
+        return img, self.width, self.height
 
 #############################################################################
 
