@@ -78,13 +78,11 @@ class User_Interface(QWidget):
         for i in range(0,34):
             for k in range(0,4):
                 fsr_degeri = sensorVal_list[i][k]
-                if fsr_degeri:
-                    #fsr_degeri = int(fsr_degeri) 
-                    scaled_value = int((fsr_degeri/1023)*255)
-                    color = QColor(scaled_value, 0, 255 - scaled_value) # RGB
-                    self.label_list[i * 4 + k].setStyleSheet(f"background-color: {color.name()};")
-                    self.label_list[i * 4 + k].setText(f"{fsr_degeri:04d}")
-                    #self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
+                scaled_value = int((fsr_degeri/1023)*255)
+                color = QColor(scaled_value, 0, 255 - scaled_value) # RGB
+                self.label_list[i * 4 + k].setStyleSheet(f"background-color: {color.name()};")
+                self.label_list[i * 4 + k].setText(f"{fsr_degeri:04d}")
+                self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
