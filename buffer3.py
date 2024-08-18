@@ -41,7 +41,13 @@ class ReadCellValueThread(QThread):
                 #print("{}\n".format(self.buffer[addr-1]))
             
 
-
+class MyCanvas(QWidget):
+    def __init__(self):
+        super().__init__()
+        # creating canvas
+        self.image = QImage(self.size(), QImage.Format_ARGB32)
+        self.image.fill(Qt.black)
+        
 class User_Interface(QWidget):
     def __init__(self):
         super().__init__()
@@ -51,14 +57,11 @@ class User_Interface(QWidget):
 
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
-        
-        self.label = QLabel(self)
-        self.pixmap = QPixmap()
-        self.label.setPixmap(self.pixmap)
-        
-        
+        box = QHBoxLayout()
+        self.canvas = MyCanvas()
+        box.addWidget(self.canvas)
+        self.setLayout(box)
         self.ReadCellValueThread.update.connect(self.next_())
-        self.show()
     
     def update_img(self):
         sensorVal_list = self.ReadCellValueThread.buffer
