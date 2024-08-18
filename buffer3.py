@@ -153,10 +153,12 @@ class User_Interface(QWidget):
         for x in range(img.size[0]):
             for y in range(img.size[1]-1):
                 addr = y*4+x
-                sens_val = int((sensorVal_list[addr][7] + sensorVal_list[addr][9])/2)
+                sens_val = sensorVal_list[addr][7]
                 if sens_val==None:
                     data[x,y+1] = not_connected_color
                 else:
+                    sens_val += sensorVal_list[addr][9]
+                    sens_val = int(sens_val/2)
                     sens_val = int((sens_val/65535)*255)
                     data[x,y+1] = (sens_val,100,255-sens_val)
         ###
@@ -166,10 +168,12 @@ class User_Interface(QWidget):
                 if (addr==31 or addr==34):
                     data[x,y] = not_connected_color
                 else:
-                    sens_val = int((sensorVal_list[addr][7] + sensorVal_list[addr][9])/2)
+                    sens_val = sensorVal_list[addr][7]
                     if sens_val==None:
                         data[x,y] = not_connected_color
                     else:
+                        sens_val += sensorVal_list[addr][9]
+                        sens_val = int(sens_val/2)
                         sens_val = int((sens_val/65535)*255)
                         data[x,y] = (sens_val,100,255-sens_val)
         ###
@@ -189,10 +193,12 @@ class User_Interface(QWidget):
         for x in range(img.size[0]):
             for y in range(img.size[1]-1):
                 addr = y*4+x
-                sens_val = int((sensorVal_list[addr][6] + sensorVal_list[addr][8])/2)
+                sens_val = sensorVal_list[addr][6]
                 if sens_val==None:
                     data[x,y+1] = not_connected_color
                 else:
+                    sens_val += sensorVal_list[addr][8]
+                    sens_val = int(sens_val/2)
                     sens_val = int((sens_val/65535)*255)
                     data[x,y+1] = (sens_val,100,255-sens_val)
         ###
@@ -202,10 +208,12 @@ class User_Interface(QWidget):
                 if (addr==31 or addr==34):
                     data[x,y] = not_connected_color
                 else:
-                    sens_val = int((sensorVal_list[addr][7] + sensorVal_list[addr][9])/2)
+                    sens_val = sensorVal_list[addr][6]
                     if sens_val==None:
                         data[x,y] = not_connected_color
                     else:
+                        sens_val += sensorVal_list[addr][8]
+                        sens_val = int(sens_val/2)
                         sens_val = int((sens_val/65535)*255)
                         data[x,y] = (sens_val,100,255-sens_val)
         ###
