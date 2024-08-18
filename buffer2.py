@@ -6,7 +6,7 @@ import sys
 import numpy as np
 import math
 import smbus2 as smbus
-import threading
+
 
 def convert_data(data):
     sensor_list = []
@@ -15,44 +15,36 @@ def convert_data(data):
         sensor_list.append(sensor_reading)
     return sensor_list
 
-c = threading.Condition()
-thread_flag = 0
-buffer = [[0 for j in range(0, 12)] for i in range(0, 34)]
 
-class ReadCellValueThread(threading.Thread):
+class ReadCellValueThread(QThread):
+    data = pyqtSignal(list)
+    update = pyqtSignal()
 
-    def __init__(self,channel=1):
-        threading.Thread.__init__(self)
+    def __init__(self,channel=1, parent=None):
+        super(ReadCellValueThread, self).__init__(parent)
         self.bus = smbus.SMBus(channel)
-
+        self.buffer = [[0 for j in range(0, 12)] for i in range(0, 34)]
 
     def run(self):
-        global thread_flag
-        global buffer
         while True:
-            c.acquire()
-            if thread_flag == 0:
-                thread_flag = 1
-                for addr in range(1,34+1):
-                    try:
-                        data = self.bus.read_i2c_block_data(addr+7, 0, 24, force=None)
-                        time.sleep(0.1)
-                        buffer[addr-1] = convert_data(data)
-                        print("{}\n".format(buffer[addr-1]))
-                    
-                    except:
-                        buffer[addr-1] = [None for n in range(0,12)]
-                c.notify_all()
-            else:
-                c.wait()
-            c.release()
-                    
+            for addr in range(1,34+1):
+                self.update.emit()
+                try:
+                    data = self.bus.read_i2c_block_data(addr+7, 0, 24, force=None)
+                    time.sleep(0.1)
+                    self.buffer[addr-1] = convert_data(data)
+                    print("{}\n".format(self.buffer[addr-1]))
+                except:
+                    self.buffer[addr-1] = [None for n in range(0,12)]
+                self.data.emit(self.buffer)
+                #print("{}\n".format(self.buffer[addr-1]))
+            
 
 
-class User_Interface(QWidget,threading.Thread):
+class User_Interface(QWidget):
     def __init__(self):
         super().__init__()
-        threading.Thread.__init__(self)
+
         self.ReadCellValueThread = ReadCellValueThread()
         self.ReadCellValueThread.start()
 
@@ -79,27 +71,19 @@ class User_Interface(QWidget,threading.Thread):
             grid_layout.addWidget(self.label_list[first_fsr + 3], row+1, col+1)
             
         self.setLayout(grid_layout)
-        #self.ReadCellValueThread.data_received.connect(self.update_values)
+        self.ReadCellValueThread.update.connect(self.update_values)
         
-    def run(self):
-        global thread_flag
-        global buffer
-        while True:
-            c.acquire()
-            if thread_flag == 1:
-                for i in range(0,34):
-                    for k in range(0,4):
-                        fsr_degeri = buffer[i][k]
-                        if fsr_degeri:
-                            fsr_degeri = int(fsr_degeri) 
-                            scaled_value = int((fsr_degeri/1023)*255)
-                            color = QColor(scaled_value, 0, 255 - scaled_value) # RGB
-                            self.label_list[i * 4 + k].setStyleSheet(f"background-color: {color.name()};")
-                            self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
-                c.notify_all()
-            else:
-                c.wait()
-            c.release()
+    def update_values(self):
+        sensorVal_list = self.ReadCellValueThread.buffer
+        for i in range(0,34):
+            for k in range(0,4):
+                fsr_degeri = sensorVal_list[i][k]
+                if fsr_degeri:
+                    fsr_degeri = int(fsr_degeri) 
+                    scaled_value = int((fsr_degeri/1023)*255)
+                    color = QColor(scaled_value, 0, 255 - scaled_value) # RGB
+                    self.label_list[i * 4 + k].setStyleSheet(f"background-color: {color.name()};")
+                    self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
