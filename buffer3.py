@@ -20,7 +20,7 @@ def convert_data(data):
     return sensor_list
 
 
-class ReadCellValueThread(QThread):
+class ReadCellValueThread():
     data = pyqtSignal(list)
     update = pyqtSignal()
 
@@ -62,7 +62,7 @@ class User_Interface():
         self.canvas.pack(expand=tk.YES)
         self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=img)
         self.ReadCellValueThread.update.connect(self.next_)
-        self.root.mainloop()
+        
         
         
         
