@@ -45,7 +45,7 @@ class ReadCellValueThread(QThread):
             
 
 
-class User_Interface(QWidget):
+class User_Interface():
     def __init__(self):
         super().__init__()
 
@@ -72,7 +72,6 @@ class User_Interface(QWidget):
         wpercent = (base_width / float(img.size[0]))
         hsize = int((float(img.size[1]) * float(wpercent)))
         data = img.load()
-        sensorVal_list = self.ReadCellValueThread.buffer
         for x in range(img.size[0]):
             for y in range(img.size[1]-2):
                 addr = int(y/2)*4+int(x/2)
