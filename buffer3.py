@@ -94,10 +94,10 @@ class User_Interface(QWidget):
                 if (addr==32 or addr==35):
                     data[x,y] = not_connected_color
                 else:
+                    sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
                     if sens_val==None:
                         data[x,y] = not_connected_color
                     else:
-                        sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
                         sens_val = int((sens_val/1023)*255)
                         data[x,y] = (sens_val,100,255-sens_val)
         ###
