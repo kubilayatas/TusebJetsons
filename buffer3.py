@@ -72,7 +72,7 @@ class User_Interface(QWidget):
         self.label_fsr_text.setStyleSheet("border: 1px solid black;")
         
         grid_layout.addWidget(self.label_fsr_text, 0, 0)
-        grid_layout.addWidget(self.label_fsr, 0, 1)
+        grid_layout.addWidget(self.label_fsr, 1, 0)
         
         self.setLayout(grid_layout)
         self.ReadCellValueThread.data_r.connect(self.update_img)
