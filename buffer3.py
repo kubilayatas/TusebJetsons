@@ -87,7 +87,7 @@ class User_Interface(QWidget):
         self.canvas_humid = QPixmap(150, 340)
         self.canvas_humid.fill(Qt.white)
         
-        self.label_humid.setPixmap(self.canvas_heat)
+        self.label_humid.setPixmap(self.canvas_humid)
         self.label_humid.setStyleSheet("border: 1px solid black;")
         
         self.label_humid_text.setText("% Bağıl Nem Haritası")
@@ -103,9 +103,7 @@ class User_Interface(QWidget):
         grid_layout.addWidget(self.label_humid, 1, 2)
         
         self.setLayout(grid_layout)
-        self.ReadCellValueThread.data_r.connect(self.update_img_FSR)
-        self.ReadCellValueThread.data_r.connect(self.update_img_HEAT)
-        self.ReadCellValueThread.data_r.connect(self.update_img_HUMID)
+        self.ReadCellValueThread.data_r.connect(self.update_img)
 ##############################################################################    
     def create_img_FSR(self):
         sensorVal_list = self.ReadCellValueThread.buffer
@@ -222,22 +220,20 @@ class User_Interface(QWidget):
         return img, self.width, self.height
      
 ###############################################################################
-    def update_img_FSR(self):
-        img, wh, ht = self.create_img_FSR()
-        qimage = ImageQt(img)
-        self.label_fsr.setPixmap(QPixmap.fromImage(qimage))
+    def update_img(self):
+        img1, wh1, ht1 = self.create_img_FSR()
+        qimage1 = ImageQt(img1)
+        self.label_fsr.setPixmap(QPixmap.fromImage(qimage1))
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
-    def update_img_HEAT(self):
-        img, wh, ht = self.create_img_HEAT()
-        qimage = ImageQt(img)
-        self.label_heat.setPixmap(QPixmap.fromImage(qimage))
+        img2, wh2, ht2 = self.create_img_HEAT()
+        qimage2 = ImageQt(img2)
+        self.label_heat.setPixmap(QPixmap.fromImage(qimage2))
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
-    def update_img_HUMID(self):
-        img, wh, ht = self.create_img_HUMID()
-        qimage = ImageQt(img)
-        self.label_humid.setPixmap(QPixmap.fromImage(qimage))
+        img3, wh3, ht3 = self.create_img_HUMID()
+        qimage3 = ImageQt(img3)
+        self.label_humid.setPixmap(QPixmap.fromImage(qimage3))
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
 
