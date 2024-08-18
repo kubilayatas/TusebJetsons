@@ -66,9 +66,9 @@ class User_Interface(QWidget):
         box.addWidget(self.label)
         
         self.setLayout(box)
-        self.ReadCellValueThread.update.connect(self.next_())
+        self.ReadCellValueThread.update.connect(self.update_img)
     
-    def update_img(self):
+    def create_img(self):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
@@ -107,8 +107,8 @@ class User_Interface(QWidget):
 #                     self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
 # =============================================================================
     
-    def next_(self):
-        img, wh, ht = self.update_img()
+    def update_img(self):
+        img, wh, ht = self.create_img()
         qimage = ImageQt(img)
         self.pixmap = QPixmap.fromImage(qimage)
         self.label.resize(self.pixmap.width(),
