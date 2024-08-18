@@ -35,7 +35,7 @@ class ReadCellValueThread(Thread):
     def run(self):
         while True:
             for addr in range(1,34+1):
-                self.update.emit()
+                #self.update.emit()
                 try:
                     data = self.bus.read_i2c_block_data(addr+7, 0, 24, force=None)
                     time.sleep(0.1)
