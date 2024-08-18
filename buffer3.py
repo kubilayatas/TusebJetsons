@@ -45,7 +45,7 @@ class ReadCellValueThread(QThread):
             
 
 
-class User_Interface(QWidget):
+class User_Interface():
     def __init__(self):
         super().__init__()
 
@@ -103,5 +103,5 @@ class User_Interface(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = User_Interface()
-    window.show()
+    #window.show()
     sys.exit(app.exec_())
