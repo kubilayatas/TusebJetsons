@@ -73,6 +73,7 @@ class User_Interface(QWidget):
     def create_img(self):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
+        not_connected_color = (159,122,36)
         img = Image.new('RGB', [4*2,9*2], 255)
         wpercent = (base_width / float(img.size[0]))
         hsize = int((float(img.size[1]) * float(wpercent)))
@@ -82,14 +83,21 @@ class User_Interface(QWidget):
                 addr = int(y/2)*4+int(x/2)
                 sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
                 if sens_val==None:
-                    data[x,y] = (159,122,36)
+                    data[x,y+2] = not_connected_color
+                else:
+                    sens_val = int((sens_val/1023)*255)
+                    data[x,y+2] = (sens_val,100,255-sens_val)
+        ###
+        for x in range(img.size[0]):
+            for y in range(2):
+                addr = int(y/2)*4+int(x/2)+32
+                sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
+                if (addr==32 or addr==35):
+                    data[x,y] = not_connected_color
                 else:
                     sens_val = int((sens_val/1023)*255)
                     data[x,y] = (sens_val,100,255-sens_val)
-        data2=data
-        for x in range(img.size[0]):
-            for y in range(img.size[1]-2):
-                data[x,y+2] = data2[x,y]
+        ###
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
         return img, self.width, self.height     
