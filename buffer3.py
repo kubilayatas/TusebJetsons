@@ -62,10 +62,10 @@ class User_Interface(QWidget):
         ###############################################
         self.label_fsr = QLabel()
         self.label_fsr_text = QLabel()
-        self.canvas_fsr = QPixmap(150, 340)
-        self.canvas_fsr.fill(Qt.white)
+        canvas_fsr = QPixmap(150, 340)
+        canvas_fsr.fill(Qt.white)
         
-        self.label_fsr.setPixmap(self.canvas_fsr)
+        self.label_fsr.setPixmap(canvas_fsr)
         self.label_fsr.setStyleSheet("border: 1px solid black;")
         
         self.label_fsr_text.setText("Basınç Haritası")
@@ -73,10 +73,10 @@ class User_Interface(QWidget):
         ###############################################
         self.label_heat = QLabel()
         self.label_heat_text = QLabel()
-        self.canvas_heat = QPixmap(150, 340)
-        self.canvas_heat.fill(Qt.white)
+        canvas_heat = QPixmap(150, 340)
+        canvas_heat.fill(Qt.white)
         
-        self.label_heat.setPixmap(self.canvas_heat)
+        self.label_heat.setPixmap(canvas_heat)
         self.label_heat.setStyleSheet("border: 1px solid black;")
         
         self.label_heat_text.setText("Sıcaklık Haritası")
@@ -84,10 +84,10 @@ class User_Interface(QWidget):
         ###############################################
         self.label_humid = QLabel()
         self.label_humid_text = QLabel()
-        self.canvas_humid = QPixmap(150, 340)
-        self.canvas_humid.fill(Qt.white)
+        canvas_humid = QPixmap(150, 340)
+        canvas_humid.fill(Qt.white)
         
-        self.label_humid.setPixmap(self.canvas_humid)
+        self.label_humid.setPixmap(canvas_humid)
         self.label_humid.setStyleSheet("border: 1px solid black;")
         
         self.label_humid_text.setText("% Bağıl Nem Haritası")
@@ -103,9 +103,7 @@ class User_Interface(QWidget):
         grid_layout.addWidget(self.label_humid, 1, 2)
         
         self.setLayout(grid_layout)
-        self.ReadCellValueThread.data_r.connect(self.update_img_FSR)
-        self.ReadCellValueThread.data_r.connect(self.update_img_HEAT)
-        self.ReadCellValueThread.data_r.connect(self.update_img_HUMID)
+        self.ReadCellValueThread.data_r.connect(self.update_img)
 ##############################################################################    
     def create_img_FSR(self):
         sensorVal_list = self.ReadCellValueThread.buffer
@@ -235,6 +233,24 @@ class User_Interface(QWidget):
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
     def update_img_HUMID(self):
+        img3, wh3, ht3 = self.create_img_HUMID()
+        qimage3 = ImageQt(img3)
+        self.label_humid.setPixmap(QPixmap.fromImage(qimage3))
+        #self.label.resize(self.pixmap.width(),
+        #                  self.pixmap.height())
+        
+#################################
+    def update_img(self):
+        img1, wh1, ht1 = self.create_img_FSR()
+        qimage1 = ImageQt(img1)
+        self.label_fsr.setPixmap(QPixmap.fromImage(qimage1))
+        #self.label.resize(self.pixmap.width(),
+        #                  self.pixmap.height())
+        img2, wh2, ht2 = self.create_img_HEAT()
+        qimage2 = ImageQt(img2)
+        self.label_heat.setPixmap(QPixmap.fromImage(qimage2))
+        #self.label.resize(self.pixmap.width(),
+        #                  self.pixmap.height())
         img3, wh3, ht3 = self.create_img_HUMID()
         qimage3 = ImageQt(img3)
         self.label_humid.setPixmap(QPixmap.fromImage(qimage3))
