@@ -103,7 +103,9 @@ class User_Interface(QWidget):
         grid_layout.addWidget(self.label_humid, 1, 2)
         
         self.setLayout(grid_layout)
-        self.ReadCellValueThread.data_r.connect(self.update_img)
+        self.ReadCellValueThread.data_r.connect(self.update_img_FSR)
+        self.ReadCellValueThread.data_r.connect(self.update_img_HEAT)
+        self.ReadCellValueThread.data_r.connect(self.update_img_HUMID)
 ##############################################################################    
     def create_img_FSR(self):
         sensorVal_list = self.ReadCellValueThread.buffer
@@ -144,93 +146,95 @@ class User_Interface(QWidget):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         not_connected_color = (159,122,36)
-        img = Image.new('RGB', [4,9], 255)
-        wpercent = (base_width / float(img.size[0]))
-        hsize = int((float(img.size[1]) * float(wpercent)))
-        data = img.load()
-        for x in range(img.size[0]):
-            for y in range(img.size[1]-1):
+        img2 = Image.new('RGB', [4,9], 255)
+        wpercent = (base_width / float(img2.size[0]))
+        hsize = int((float(img2.size[1]) * float(wpercent)))
+        data2 = img2.load()
+        for x in range(img2.size[0]):
+            for y in range(img2.size[1]-1):
                 addr = y*4+x
                 sens_val = sensorVal_list[addr][7]
                 if sens_val==None:
-                    data[x,y+1] = not_connected_color
+                    data2[x,y+1] = not_connected_color
                 else:
                     sens_val += sensorVal_list[addr][9]
                     sens_val = int(sens_val/2)
                     sens_val = int((sens_val/65535)*255)
-                    data[x,y+1] = (sens_val,100,255-sens_val)
+                    data2[x,y+1] = (sens_val,100,255-sens_val)
         ###
-        for x in range(img.size[0]):
+        for x in range(img2.size[0]):
             for y in range(1):
                 addr = y*4+x+31
                 if (addr==31 or addr==34):
-                    data[x,y] = not_connected_color
+                    data2[x,y] = not_connected_color
                 else:
                     sens_val = sensorVal_list[addr][7]
                     if sens_val==None:
-                        data[x,y] = not_connected_color
+                        data2[x,y] = not_connected_color
                     else:
                         sens_val += sensorVal_list[addr][9]
                         sens_val = int(sens_val/2)
                         sens_val = int((sens_val/65535)*255)
-                        data[x,y] = (sens_val,100,255-sens_val)
+                        data2[x,y] = (sens_val,100,255-sens_val)
         ###
-        img = img.resize((base_width, hsize), resample=Image.BICUBIC)
+        img2 = img2.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
-        return img, self.width, self.height
+        return img2, self.width, self.height
      
 ###############################################################################
     def create_img_HUMID(self):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         not_connected_color = (159,122,36)
-        img = Image.new('RGB', [4,9], 255)
-        wpercent = (base_width / float(img.size[0]))
-        hsize = int((float(img.size[1]) * float(wpercent)))
-        data = img.load()
-        for x in range(img.size[0]):
-            for y in range(img.size[1]-1):
+        img3 = Image.new('RGB', [4,9], 255)
+        wpercent = (base_width / float(img3.size[0]))
+        hsize = int((float(img3.size[1]) * float(wpercent)))
+        data3 = img3.load()
+        for x in range(img3.size[0]):
+            for y in range(img3.size[1]-1):
                 addr = y*4+x
                 sens_val = sensorVal_list[addr][6]
                 if sens_val==None:
-                    data[x,y+1] = not_connected_color
+                    data3[x,y+1] = not_connected_color
                 else:
                     sens_val += sensorVal_list[addr][8]
                     sens_val = int(sens_val/2)
                     sens_val = int((sens_val/65535)*255)
-                    data[x,y+1] = (sens_val,100,255-sens_val)
+                    data3[x,y+1] = (sens_val,100,255-sens_val)
         ###
-        for x in range(img.size[0]):
+        for x in range(img3.size[0]):
             for y in range(1):
                 addr = y*4+x+31
                 if (addr==31 or addr==34):
-                    data[x,y] = not_connected_color
+                    data3[x,y] = not_connected_color
                 else:
                     sens_val = sensorVal_list[addr][6]
                     if sens_val==None:
-                        data[x,y] = not_connected_color
+                        data3[x,y] = not_connected_color
                     else:
                         sens_val += sensorVal_list[addr][8]
                         sens_val = int(sens_val/2)
                         sens_val = int((sens_val/65535)*255)
-                        data[x,y] = (sens_val,100,255-sens_val)
+                        data3[x,y] = (sens_val,100,255-sens_val)
         ###
-        img = img.resize((base_width, hsize), resample=Image.BICUBIC)
+        img3 = img3.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
-        return img, self.width, self.height
+        return img3, self.width, self.height
      
 ###############################################################################
-    def update_img(self):
+    def update_img_FSR(self):
         img1, wh1, ht1 = self.create_img_FSR()
         qimage1 = ImageQt(img1)
         self.label_fsr.setPixmap(QPixmap.fromImage(qimage1))
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
+    def update_img_HEAT(self):
         img2, wh2, ht2 = self.create_img_HEAT()
         qimage2 = ImageQt(img2)
         self.label_heat.setPixmap(QPixmap.fromImage(qimage2))
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
+    def update_img_HUMID(self):
         img3, wh3, ht3 = self.create_img_HUMID()
         qimage3 = ImageQt(img3)
         self.label_humid.setPixmap(QPixmap.fromImage(qimage3))
