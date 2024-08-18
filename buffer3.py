@@ -19,8 +19,7 @@ def convert_data(data):
 
 
 class ReadCellValueThread(QThread):
-    data = pyqtSignal(list)
-    update = pyqtSignal()
+    data_r = pyqtSignal(list)
 
     def __init__(self,channel=1, parent=None):
         super(ReadCellValueThread, self).__init__(parent)
@@ -30,15 +29,14 @@ class ReadCellValueThread(QThread):
     def run(self):
         while True:
             for addr in range(1,34+1):
-                self.update.emit()
                 try:
                     data = self.bus.read_i2c_block_data(addr+7, 0, 24, force=None)
                     time.sleep(0.1)
                     self.buffer[addr-1] = convert_data(data)
-                    print("{}\n".format(self.buffer[addr-1]))
+                    #print("{}\n".format(self.buffer[addr-1]))
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
-                self.data.emit(self.buffer)
+                self.data_r.emit(self.buffer)
                 #print("{}\n".format(self.buffer[addr-1]))
             
 
@@ -59,19 +57,19 @@ class User_Interface(QWidget):
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
         self.box = QHBoxLayout()
-# =============================================================================
-#         self.label = QLabel()
-#         self.pixmap = QPixmap()
-#         self.label.setPixmap(self.pixmap)
-#         
-#         self.box.addWidget(self.label)
-#         
-# =============================================================================
+        self.label = QLabel()
+        self.pixmap = QPixmap()
+        self.label.setPixmap(self.pixmap)
+        
+        self.box.addWidget(self.label)
+        
         self.setLayout(self.box)
-        self.ReadCellValueThread.update.connect(self.update_img)
+        self.ReadCellValueThread.data_r.connect(self.update_img)
     
     def create_img(self):
-        sensorVal_list = self.ReadCellValueThread.buffer
+        #sensorVal_list = self.ReadCellValueThread.buffer
+        print(data_r)
+        sensorVal_list = data_r
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
         wpercent = (base_width / float(img.size[0]))
@@ -112,13 +110,9 @@ class User_Interface(QWidget):
     def update_img(self):
         img, wh, ht = self.create_img()
         qimage = ImageQt(img)
-        self.label = QLabel()
-        self.pixmap = QPixmap(qimage)
-        self.label.setPixmap(self.pixmap)
+        self.pixmap = QPixmap.fromImage(qimage)
         self.label.resize(self.pixmap.width(),
                           self.pixmap.height())
-        self.box.addWidget(self.label)
-        
            
 
 
