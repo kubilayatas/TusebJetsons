@@ -57,10 +57,9 @@ class User_Interface(QWidget):
         self.height = 600
         self.images = None
 
-        img, wh, ht = self.open_file()
-        self.canvas = tk.Canvas(self.root, width=wh, height=ht)
+        self.canvas = tk.Canvas(self.root, width=200, height=450)
         self.canvas.pack(expand=tk.YES)
-        self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=img)
+        self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=None)
         self.ReadCellValueThread.update.connect(self.update_values)
         self.root.mainloop()
         
