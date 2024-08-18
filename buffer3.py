@@ -58,8 +58,12 @@ class User_Interface(QWidget):
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
         box = QHBoxLayout()
-        self.canvas = MyCanvas()
-        box.addWidget(self.canvas)
+        self.label = QLabel()
+        self.pixmap = QPixmap()
+        self.label.setPixmap(self.pixmap)
+        
+        box.addWidget(self.label)
+        
         self.setLayout(box)
         self.ReadCellValueThread.update.connect(self.next_())
     
