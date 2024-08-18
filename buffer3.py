@@ -57,12 +57,13 @@ class User_Interface(QWidget):
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
         
+        box = QBoxLayout()
         self.label = QLabel()
         self.canvas = QPixmap(150, 340)
         self.canvas.fill(Qt.white)
         self.label.setPixmap(self.canvas)
-        #self.setLayout(self.label)
-        
+        box.addWidget(self.label)
+        self.setLayout(box)
         self.ReadCellValueThread.data_r.connect(self.update_img)
     
     def create_img(self):
