@@ -110,8 +110,7 @@ class User_Interface(QWidget):
     def next_(self):
         img, wh, ht = self.update_img()
         qimage = ImageQt(img)
-        pxmp = QtGui.QPixmap.fromImage(qimage)
-        self.pixmap = QPixmap(pxmp)
+        self.pixmap = QPixmap.fromImage(qimage)
         self.label.resize(self.pixmap.width(),
                           self.pixmap.height())
            
