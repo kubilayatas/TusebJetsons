@@ -91,10 +91,10 @@ class User_Interface(QWidget):
         for x in range(img.size[0]):
             for y in range(2):
                 addr = int(y/2)*4+int(x/2)+32
-                sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
                 if (addr==32 or addr==35 or sens_val==None):
                     data[x,y] = not_connected_color
                 else:
+                    sens_val = sensorVal_list[addr][(x%2)+(y%2)*2]
                     sens_val = int((sens_val/1023)*255)
                     data[x,y] = (sens_val,100,255-sens_val)
         ###
