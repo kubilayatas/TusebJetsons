@@ -49,14 +49,13 @@ class ReadCellValueThread(Thread):
             
 
 
-class User_Interface():
-    global shared_data
+class User_Interface(object):
     def __init__(self):
         super().__init__()
-
+        global shared_data
+        self.data = shared_data
         self.ReadCellValueThread = ReadCellValueThread()
         self.ReadCellValueThread.start()
-        
         self.root = tk.Tk()
         self.width = 800
         self.height = 600
@@ -72,7 +71,7 @@ class User_Interface():
         
     def update_img(self):
         #sensorVal_list = self.ReadCellValueThread.buffer
-        sensorVal_list = shared_data[-1]
+        sensorVal_list = self.data[-1]
         shared_data.clear()
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
@@ -109,5 +108,5 @@ class User_Interface():
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = User_Interface()
-    #window.show()
+    window.show()
     sys.exit(app.exec_())
