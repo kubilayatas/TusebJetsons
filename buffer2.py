@@ -21,7 +21,7 @@ buffer = [[0 for j in range(0, 12)] for i in range(0, 34)]
 
 class ReadCellValueThread(threading.Thread):
 
-    def __init__(self,name,channel=1):
+    def __init__(self,channel=1):
         threading.Thread.__init__(self)
         self.bus = smbus.SMBus(channel)
 
