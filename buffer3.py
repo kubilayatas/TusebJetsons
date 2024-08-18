@@ -86,7 +86,7 @@ class User_Interface(QWidget):
                     data[x,y] = (sens_val,100,255-sens_val)
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         #img = ImageTk.PhotoImage(img)
-        return ImageQt(img), self.width, self.height     
+        return img, self.width, self.height     
      
 # =============================================================================
 #     def update_values(self):
@@ -109,7 +109,9 @@ class User_Interface(QWidget):
     
     def next_(self):
         img, wh, ht = self.update_img()
-        self.pixmap = QPixmap(img)
+        qimage = ImageQt(img)
+        pxmp = QtGui.QPixmap.fromImage(qimage)
+        self.pixmap = QPixmap(pxmp)
         self.label.resize(self.pixmap.width(),
                           self.pixmap.height())
            
