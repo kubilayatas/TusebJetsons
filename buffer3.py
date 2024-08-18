@@ -58,14 +58,16 @@ class User_Interface(QWidget):
 
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
-        box = QHBoxLayout()
-        self.label = QLabel()
-        self.pixmap = QPixmap()
-        self.label.setPixmap(self.pixmap)
-        
-        box.addWidget(self.label)
-        
-        self.setLayout(box)
+        self.box = QHBoxLayout()
+# =============================================================================
+#         self.label = QLabel()
+#         self.pixmap = QPixmap()
+#         self.label.setPixmap(self.pixmap)
+#         
+#         self.box.addWidget(self.label)
+#         
+# =============================================================================
+        self.setLayout(self.box)
         self.ReadCellValueThread.update.connect(self.update_img)
     
     def create_img(self):
@@ -110,9 +112,13 @@ class User_Interface(QWidget):
     def update_img(self):
         img, wh, ht = self.create_img()
         qimage = ImageQt(img)
-        self.pixmap = QPixmap.fromImage(qimage)
+        self.label = QLabel()
+        self.pixmap = QPixmap(qimage)
+        self.label.setPixmap(self.pixmap)
         self.label.resize(self.pixmap.width(),
                           self.pixmap.height())
+        self.box.addWidget(self.label)
+        
            
 
 
