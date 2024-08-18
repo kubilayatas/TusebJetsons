@@ -19,7 +19,7 @@ def convert_data(data):
 
 
 class ReadCellValueThread(QThread):
-    data_r = pyqtSignal(list)
+    data_r = pyqtSignal(str)
 
     def __init__(self,channel=1, parent=None):
         super(ReadCellValueThread, self).__init__(parent)
@@ -36,7 +36,7 @@ class ReadCellValueThread(QThread):
                     #print("{}\n".format(self.buffer[addr-1]))
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
-                self.data_r.emit(self.buffer)
+                self.data_r.emit("dataR")
                 #print("{}\n".format(self.buffer[addr-1]))
             
 
@@ -56,20 +56,17 @@ class User_Interface(QWidget):
 
         self.setGeometry(200, 200, 1000, 800) 
         self.setWindowTitle("FSR Arayüzü")
-        self.box = QHBoxLayout()
+        
         self.label = QLabel()
-        self.pixmap = QPixmap()
-        self.label.setPixmap(self.pixmap)
+        self.canvas = QPixmap(150, 340)
+        self.canvas.fill(Qt.white)
+        self.label.setPixmap(self.canvas)
+        self.setCentralWidget(self.label)
         
-        self.box.addWidget(self.label)
-        
-        self.setLayout(self.box)
         self.ReadCellValueThread.data_r.connect(self.update_img)
     
     def create_img(self):
-        #sensorVal_list = self.ReadCellValueThread.buffer
-        print(data_r)
-        sensorVal_list = data_r
+        sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
         wpercent = (base_width / float(img.size[0]))
@@ -110,7 +107,8 @@ class User_Interface(QWidget):
     def update_img(self):
         img, wh, ht = self.create_img()
         qimage = ImageQt(img)
-        self.pixmap = QPixmap.fromImage(qimage)
+        self.canvas = QPixmap.fromImage(qimage)
+        self.label.setPixmap(self.canvas)
         self.label.resize(self.pixmap.width(),
                           self.pixmap.height())
            
