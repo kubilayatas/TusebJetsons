@@ -60,12 +60,13 @@ class User_Interface(QWidget):
         grid_layout = QGridLayout()
         grid_layout.setSpacing(0)
         
-        self.label = QLabel()
+        self.label_fsr = QLabel()
         self.canvas = QPixmap(150, 340)
         self.canvas.fill(Qt.white)
-        self.label.setPixmap(self.canvas)
+        self.label_fsr.setPixmap(self.canvas)
+        self.label_fsr.setText("Basınç Haritası")
         
-        grid_layout.addWidget(self.label, 0, 0)
+        grid_layout.addWidget(self.label_fsr, 0, 0)
         
         self.setLayout(grid_layout)
         self.ReadCellValueThread.data_r.connect(self.update_img)
@@ -127,7 +128,7 @@ class User_Interface(QWidget):
     def update_img(self):
         img, wh, ht = self.create_img()
         qimage = ImageQt(img)
-        self.label.setPixmap(QPixmap.fromImage(qimage))
+        self.label_fsr.setPixmap(QPixmap.fromImage(qimage))
         #self.label.resize(self.pixmap.width(),
         #                  self.pixmap.height())
            
