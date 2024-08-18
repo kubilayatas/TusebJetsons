@@ -10,9 +10,9 @@ import glob
 from tkinter import filedialog
 import tkinter as tk
 from PIL import ImageTk, Image
-from threading import Thread, Queue
+from threading import Thread
 
-fifo = Queue()
+shared_data = []
 
 def convert_data(data):
     sensor_list = []
@@ -25,7 +25,7 @@ def convert_data(data):
 class ReadCellValueThread(Thread):
     #data = pyqtSignal(list)
     #update = pyqtSignal()
-    global fifo
+    global shared_data
 
     def __init__(self,channel=1, parent=None):
         super(ReadCellValueThread, self).__init__(parent)
@@ -44,13 +44,13 @@ class ReadCellValueThread(Thread):
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
                 #self.data.emit(self.buffer)
-                fifo.put(self.buffer)
+                shared_data.append(self.buffer)
                 #print("{}\n".format(self.buffer[addr-1]))
             
 
 
 class User_Interface():
-    global fifo
+    global shared_data
     def __init__(self):
         super().__init__()
 
@@ -61,7 +61,6 @@ class User_Interface():
         self.width = 800
         self.height = 600
         self.images = None
-        self.data = fifo
         img, wh, ht = self.update_img()
         self.canvas = tk.Canvas(self.root, width=wh, height=ht, bg='black')
         self.canvas.pack(expand=tk.YES)
@@ -73,7 +72,8 @@ class User_Interface():
         
     def update_img(self):
         #sensorVal_list = self.ReadCellValueThread.buffer
-        sensorVal_list = self.data.get()
+        sensorVal_list = shared_data[-1]
+        shared_data.clear()
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
         wpercent = (base_width / float(img.size[0]))
