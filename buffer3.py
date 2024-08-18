@@ -52,68 +52,21 @@ class User_Interface(QWidget):
         self.ReadCellValueThread = ReadCellValueThread()
         self.ReadCellValueThread.start()
 
-        self.setGeometry(200, 200, 1000, 800) 
-        self.setWindowTitle("FSR Arayüzü")
-        
-
-        grid_layout = QGridLayout()
-        grid_layout.setSpacing(0)
-
-        self.label_list = [QLabel(f"FSR{i+1:03d}") for i in range(0, 144)]
-        for i in range(0,144):
-            self.label_list[i].setStyleSheet("border: 1px solid black;")
-        
-        for cell in range(0,36):
-            cell_column = cell%4
-            cell_row = math.floor(cell/4)
-            first_fsr = cell_row*16 + cell_column*4
-            row = cell_row*2
-            col = cell_column*2
-            grid_layout.addWidget(self.label_list[first_fsr], row, col)
-            grid_layout.addWidget(self.label_list[first_fsr + 1], row, col+1)
-            grid_layout.addWidget(self.label_list[first_fsr + 2], row+1, col)
-            grid_layout.addWidget(self.label_list[first_fsr + 3], row+1, col+1)
-            
-        self.setLayout(grid_layout)
-        self.ReadCellValueThread.update.connect(self.update_values)
-        
-    def update_values(self):
-        sensorVal_list = self.ReadCellValueThread.buffer
-        for i in range(0,34):
-            for k in range(0,4):
-                fsr_degeri = sensorVal_list[i][k]
-                if fsr_degeri == None:
-                    color = QColor(163, 73, 164) # RGB
-                    self.label_list[i * 4 + k].setStyleSheet(f"background-color: {color.name()};")
-                    self.label_list[i * 4 + k].setText(f"{i+1:02d}##")
-                    self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
-                else:
-                    scaled_value = int((fsr_degeri/1023)*255)
-                    color = QColor(scaled_value, 40, 255 - scaled_value) # RGB
-                    self.label_list[i * 4 + k].setStyleSheet(f"background-color: {color.name()};")
-                    self.label_list[i * 4 + k].setText(f"{fsr_degeri:04d}")
-                    self.label_list[i * 4 + k].setAlignment(Qt.AlignCenter)
-
-#############################################################################
-
-class ImageViewer(object):
-    def __init__(self):
-        self.ReadCellValueThread = ReadCellValueThread()
-        self.ReadCellValueThread.start()
         self.root = tk.Tk()
-        #self.root.state('zoomed')
         self.width = 800
         self.height = 600
         self.images = None
 
         img, wh, ht = self.open_file()
-        self.canvas = tk.Canvas(self.root, width=wh, height=ht, bg='black')
+        self.canvas = tk.Canvas(self.root, width=wh, height=ht)
         self.canvas.pack(expand=tk.YES)
         self.image_on_canvas = self.canvas.create_image(self.width/2, self.height/2, anchor=tk.CENTER, image=img)
-        self.ReadCellValueThread.update.connect(self.next_image)
+        self.ReadCellValueThread.update.connect(self.update_values)
         self.root.mainloop()
-
-    def open_file(self):
+        
+        
+    def update_values(self):
+        sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         img = Image.new('RGB', [4*2,9*2], 255)
         wpercent = (base_width / float(img.size[0]))
@@ -131,13 +84,6 @@ class ImageViewer(object):
                     data[x,y] = (sens_val,100,255-sens_val)
         img = img.resize((base_width, hsize), resample=Image.BICUBIC)
         img = ImageTk.PhotoImage(img)
-        return img, self.width, self.height
-
-    def next_image(self):
-
-        img, wh, ht = self.open_file()
-        img = ImageTk.PhotoImage(img)
-
         self.canvas.itemconfigure(self.image_on_canvas, image=img)
         self.canvas.config(width=self.width, height=self.height)
         try:
@@ -146,9 +92,11 @@ class ImageViewer(object):
             pass
 
 #############################################################################
+
+
+#############################################################################
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    #window = User_Interface()
-    window = ImageViewer()
+    window = User_Interface()
     window.show()
     sys.exit(app.exec_())
