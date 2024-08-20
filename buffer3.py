@@ -33,7 +33,7 @@ class ReadCellValueThread(QThread):
                     data = self.bus.read_i2c_block_data(addr+7, 0, 24, force=None)
                     time.sleep(0.1)
                     self.buffer[addr-1] = convert_data(data)
-                    #print("{}\n".format(self.buffer[addr-1]))
+                    print("{}\n".format(self.buffer[addr-1]))
                 except:
                     self.buffer[addr-1] = [None for n in range(0,12)]
                 self.data_r.emit("dataR")
