@@ -144,6 +144,7 @@ class User_Interface(QWidget):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         not_connected_color = (159,122,36)
+        malfunction_color = (0,0,0)
         img2 = Image.new('RGB', [4,9], 255)
         wpercent = (base_width / float(img2.size[0]))
         hsize = int((float(img2.size[1]) * float(wpercent)))
@@ -159,12 +160,18 @@ class User_Interface(QWidget):
                     data2[x,y+1] = not_connected_color
                 else:
                     if(sens_val == 1001+addr):sens_val = sens_val2
+                    if(sens_val2 == 1001+addr):sens_val = sens_val
+                    if(sens_val == 1001+addr):data2[x,y+1] = malfunction_color
+                    else:
+                        sens_val = int((sens_val/65535)*255)
+                        data2[x,y+1] = (sens_val,100,255-sens_val)
+                    """if(sens_val == 1001+addr):sens_val = sens_val2
                     if(sens_val2 == 1001+addr):sens_val2 = sens_val
                     sens_val = int((sens_val+sens_val2)/2)
                     if(sens_val == 1001+addr):data2[x,y+1] = not_connected_color
                     else:
                         sens_val = int((sens_val/65535)*255)
-                        data2[x,y+1] = (sens_val,100,255-sens_val)
+                        data2[x,y+1] = (sens_val,100,255-sens_val)"""
         ###
         for x in range(img2.size[0]):
             for y in range(1):
@@ -190,6 +197,7 @@ class User_Interface(QWidget):
         sensorVal_list = self.ReadCellValueThread.buffer
         base_width = 150
         not_connected_color = (159,122,36)
+        malfunction_color = (0,0,0)
         img3 = Image.new('RGB', [4,9], 255)
         wpercent = (base_width / float(img3.size[0]))
         hsize = int((float(img3.size[1]) * float(wpercent)))
@@ -197,7 +205,6 @@ class User_Interface(QWidget):
         for x in range(img3.size[0]):
             for y in range(img3.size[1]-1):
                 addr = y*4+x
-                if (addr == 4):print("addr 4")
                 sens_val = sensorVal_list[addr][6]
                 sens_val2 = sensorVal_list[addr][8]
                 if sens_val==None:
@@ -205,13 +212,19 @@ class User_Interface(QWidget):
                 elif sens_val2==None:
                     data3[x,y+1] = not_connected_color
                 else:
-                    if(sens_val == 1001+addr):sens_val = sens_val2
-                    if(sens_val2 == 1001+addr):sens_val2 = sens_val
+                    if(sens_val == 1001+addr):sens_val = sens_val2 ## ortalama almaktan vazgectim
+                    if(sens_val2 == 1001+addr):sens_val = sens_val ## saglam olani yansitma stratejisine gectim
+                    if(sens_val == 1001+addr):data3[x,y+1] = malfunction_color
+                    else:
+                        sens_val = int((sens_val/65535)*255)
+                        data3[x,y+1] = (sens_val,100,255-sens_val)
+                    """if(sens_val == 1001+addr):sens_val = sens_val2 ## ortalama almaktan vazgectim
+                    if(sens_val2 == 1001+addr):sens_val2 = sens_val ## saglam olani yansitma stratejisine gectim
                     sens_val = int((sens_val + sens_val2)/2)
                     if(sens_val == 1001+addr):data3[x,y+1] = not_connected_color
                     else:
                         sens_val = int((sens_val/65535)*255)
-                        data3[x,y+1] = (sens_val,100,255-sens_val)
+                        data3[x,y+1] = (sens_val,100,255-sens_val)"""
         ###
         for x in range(img3.size[0]):
             for y in range(1):
