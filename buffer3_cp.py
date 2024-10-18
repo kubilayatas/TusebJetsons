@@ -158,10 +158,10 @@ class User_Interface(QWidget):
                 elif sens_val2==None:
                     data2[x,y+1] = not_connected_color
                 else:
-                    if(sens_val == 1001+addr):{sens_val = sens_val2}
-                    if(sens_val2 == 1001+addr):{sens_val2 = sens_val}
+                    if(sens_val == 1001+addr):sens_val = sens_val2
+                    if(sens_val2 == 1001+addr):sens_val2 = sens_val
                     sens_val = int((sens_val+sens_val2)/2)
-                    if(sens_val == 1001+addr):{data2[x,y+1] = not_connected_color}
+                    if(sens_val == 1001+addr):data2[x,y+1] = not_connected_color
                     else:
                         sens_val = int((sens_val/65535)*255)
                         data2[x,y+1] = (sens_val,100,255-sens_val)
@@ -204,10 +204,10 @@ class User_Interface(QWidget):
                 elif sens_val2==None:
                     data3[x,y+1] = not_connected_color
                 else:
-                    if(sens_val == 1001+addr):{sens_val = sens_val2}
-                    if(sens_val2 == 1001+addr):{sens_val2 = sens_val}
+                    if(sens_val == 1001+addr):sens_val = sens_val2
+                    if(sens_val2 == 1001+addr):sens_val2 = sens_val
                     sens_val = int((sens_val + sens_val2)/2)
-                    if(sens_val == 1001+addr):{data3[x,y+1] = not_connected_color}
+                    if(sens_val == 1001+addr):data3[x,y+1] = not_connected_color
                     else:
                         sens_val = int((sens_val/65535)*255)
                         data3[x,y+1] = (sens_val,100,255-sens_val)
