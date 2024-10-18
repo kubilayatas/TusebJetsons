@@ -197,7 +197,7 @@ class User_Interface(QWidget):
         for x in range(img3.size[0]):
             for y in range(img3.size[1]-1):
                 addr = y*4+x
-                if addr == 4: print("addr 4")
+                if (addr == 4):print("addr 4")
                 sens_val = sensorVal_list[addr][6]
                 sens_val2 = sensorVal_list[addr][8]
                 if sens_val==None:
